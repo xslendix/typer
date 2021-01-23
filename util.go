@@ -1,9 +1,12 @@
 package main
 
 import (
+	"fmt"
+	"log"
 	"strings"
 	"unicode/utf8"
 
+	"github.com/ahmetalpbalkan/go-cursor"
 	"github.com/pkg/term"
 )
 
@@ -69,4 +72,61 @@ func GetChar() (ascii int, keyCode int, err error) {
 	t.Restore()
 	t.Close()
 	return
+}
+
+func askChoice(prompt string, choices ...string) int {
+	choice := 0
+
+	for {
+		fmt.Print(cursor.ClearEntireScreen(),
+			cursor.MoveUpperLeft(1))
+
+		if prompt != "" {
+			fmt.Println(prompt)
+		}
+
+		for i := 0; i < len(choices); i++ {
+			if i == choice {
+				fmt.Print("\033[94m>\033[0m ")
+			} else {
+				fmt.Print("  ")
+			}
+
+			fmt.Println(choices[i])
+		}
+		ascii, keyCode, err := GetChar()
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		if rune(ascii) == 'j' || keyCode == 40 {
+			if choice+1 < len(choices) {
+				choice++
+			} else {
+				choice = 0
+			}
+		}
+		if rune(ascii) == 'k' || keyCode == 38 {
+			if choice-1 > -1 {
+				choice--
+			} else {
+				choice = len(choices) - 1
+			}
+		}
+
+		if rune(ascii) == 'l' || ascii == 13 || keyCode == 39 {
+			break
+		}
+	}
+
+	fmt.Print(cursor.ClearEntireScreen())
+	return choice
+}
+
+func PrintMessage(message string) {
+	fmt.Print(cursor.ClearEntireScreen())
+	fmt.Print(cursor.MoveUpperLeft(1))
+	fmt.Println(message)
+	fmt.Println("Press any key to continue.")
+	GetChar()
 }

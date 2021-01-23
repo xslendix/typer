@@ -31,9 +31,7 @@ func main() {
 
 	fmt.Print(cursor.ClearEntireScreen())
 
-	LoadText()
-
-	startGame()
+	startMenu()
 
 }
 
@@ -54,6 +52,22 @@ var elapsed time.Duration
 var grosswpm, netwpm float64
 var cpm int
 var start time.Time
+
+func startMenu() {
+	for {
+		choice := askChoice("Main Menu", "Offline (Practice)", "Online (WIP)", "Exit")
+		if choice == 0 {
+			LoadText()
+
+			startGame()
+		} else if choice == 1 {
+			PrintMessage("Not yet implemented.")
+			GetChar()
+		} else if choice == 2 {
+			break
+		}
+	}
+}
 
 func startGame() {
 	rightCharacters = 0
@@ -129,9 +143,19 @@ func startGame() {
 	acc := (netwpm / grosswpm) * 100
 	fmt.Print(cursor.ClearEntireScreen())
 	fmt.Print(cursor.MoveUpperLeft(1))
-	fmt.Printf("\033[0mText typed in \033[94m%s\033[0m. Your Gross WPM is \033[94m%d\033[0m, Net WPM is \033[94m%d\033[0m and your CPM is \033[94m%d\033[0m.\n"+
-		"You also typed with an accuracy of \033[94m%.2f%%\033[0m.\n", elapsed.String(), int(grosswpm), int(netwpm), cpm, acc)
+	fmt.Printf("\033[0mText (\033[94m%d\033[0m words) typed in \033[94m%s\033[0m. "+
+		"Your Gross WPM is \033[94m%d\033[0m, Net WPM is \033[94m%d\033[0m and your CPM is \033[94m%d\033[0m.\n"+
+		"You also typed with an accuracy of \033[94m%.2f%%\033[0m."+
+		"\nPress any key to continue.\n",
+		wordLength, elapsed.String(), int(grosswpm), int(netwpm), cpm, acc)
 
+	GetChar()
+
+	choice := askChoice("Do you wanna retry?", "Yes", "No")
+
+	if choice == 0 {
+		startGame()
+	}
 }
 
 func updateTime() {
