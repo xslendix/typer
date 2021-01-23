@@ -8,10 +8,8 @@ import (
 	"os/user"
 	"strings"
 	"time"
-	"unicode/utf8"
 
-	"github.com/ahmetalpbalkan/go-cursor"
-	"github.com/pkg/term"
+	cursor "github.com/ahmetalpbalkan/go-cursor"
 )
 
 var texts []string
@@ -87,7 +85,7 @@ func startGame() {
 	uncorrected = 0
 
 	for {
-		ascii, _, err := getChar()
+		ascii, _, err := GetChar()
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -98,7 +96,7 @@ func startGame() {
 
 		if ascii == 127 {
 			if len(textTyped)-1 >= 0 {
-				textTyped = trimLastChar(textTyped)
+				textTyped = TrimLastChar(textTyped)
 			}
 		} else if ascii == 8 {
 			if len(textTyped)-1 >= 0 {
@@ -143,47 +141,6 @@ func updateTime() {
 	cpm = int(float64(characters) / elapsed.Minutes())
 }
 
-func getChar() (ascii int, keyCode int, err error) {
-	t, _ := term.Open("/dev/tty")
-	term.RawMode(t)
-	bytes := make([]byte, 3)
-
-	var numRead int
-	numRead, err = t.Read(bytes)
-	if err != nil {
-		return
-	}
-	if numRead == 3 && bytes[0] == 27 && bytes[1] == 91 {
-		// Three-character control sequence, beginning with "ESC-[".
-
-		// Since there are no ASCII codes for arrow keys, we use
-		// Javascript key codes.
-		if bytes[2] == 65 {
-			// Up
-			keyCode = 38
-		} else if bytes[2] == 66 {
-			// Down
-			keyCode = 40
-		} else if bytes[2] == 67 {
-			// Right
-			keyCode = 39
-		} else if bytes[2] == 68 {
-			// Left
-			keyCode = 37
-		}
-	} else if numRead == 2 && bytes[0] == 17 {
-		ascii = int(bytes[1])
-		keyCode = 17
-	} else if numRead == 1 {
-		ascii = int(bytes[0])
-	} else {
-		// Two characters read??
-	}
-	t.Restore()
-	t.Close()
-	return
-}
-
 func CustomPrint(text, textWritten string) {
 	fmt.Print(cursor.ClearEntireScreen())
 	fmt.Print(cursor.MoveUpperLeft(1))
@@ -215,27 +172,4 @@ func CustomPrint(text, textWritten string) {
 	//fmt.Print(cursor.MoveUpperLeft(1) + cursor.MoveDown(1))
 	//fmt.Printf("\033[1m\033[94mGross WPM: \033[97m%d  \033[94mNet WPM: \033[97m%d  \033[94mCPM: \033[97m%d\033[0m",
 	//int(grosswpm), int(netwpm), cpm)
-}
-
-func trimLastChar(s string) string {
-	r, size := utf8.DecodeLastRuneInString(s)
-	if size < 1 {
-		return s
-	}
-	if r == utf8.RuneError && (size == 0 || size == 1) {
-		size = 0
-	}
-
-	return s[:len(s)-size]
-}
-
-func RemoveLastWord(s *string) {
-	words := strings.Split(*s, " ")
-	if len(words) > 0 {
-		words = words[:len(words)-1]
-	}
-	*s = strings.Join(words, " ")
-	if len(*s) != 0 {
-		*s += " "
-	}
 }
