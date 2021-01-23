@@ -25,6 +25,10 @@ func main() {
 		log.Fatal(err)
 	}
 
+	SetupCloseHandler()
+
+	fmt.Print(cursor.Hide())
+
 	homeDir = user.HomeDir
 
 	rand.Seed(time.Now().UTC().UnixNano())
@@ -32,6 +36,8 @@ func main() {
 	fmt.Print(cursor.ClearEntireScreen())
 
 	startMenu()
+
+	fmt.Print(cursor.Show())
 
 }
 
@@ -82,6 +88,7 @@ func startGame() {
 
 	var textTyped string
 
+	DisableKeyboard()
 	fmt.Print("\033[0mGame starting in \033[33m5")
 	for i := 5; i > 0; i-- {
 		cursor.MoveLeft(1)
@@ -91,6 +98,7 @@ func startGame() {
 	}
 	fmt.Print(cursor.ClearEntireScreen())
 	fmt.Print(cursor.MoveUpperLeft(1))
+	EnableKeyboard()
 
 	CustomPrint(text, "")
 

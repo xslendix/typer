@@ -3,12 +3,29 @@ package main
 import (
 	"fmt"
 	"log"
+	"os"
+	"os/exec"
+	"os/signal"
 	"strings"
+	"syscall"
 	"unicode/utf8"
 
 	"github.com/ahmetalpbalkan/go-cursor"
 	"github.com/pkg/term"
 )
+
+func SetupCloseHandler() {
+	c := make(chan os.Signal)
+	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
+	go func() {
+		<-c
+		fmt.Print("\033[0m")
+		fmt.Println(cursor.Show())
+		EnableKeyboard()
+		log.Println("^C detected. Force closing...")
+		os.Exit(0)
+	}()
+}
 
 func RemoveLastWord(s *string) {
 	words := strings.Split(*s, " ")
@@ -129,4 +146,16 @@ func PrintMessage(message string) {
 	fmt.Println(message)
 	fmt.Println("Press any key to continue.")
 	GetChar()
+}
+
+func DisableKeyboard() {
+	c := exec.Command("stty -echo")
+	c.Stdout = os.Stdout
+	c.Run()
+}
+
+func EnableKeyboard() {
+	c := exec.Command("stty echo")
+	c.Stdout = os.Stdout
+	c.Run()
 }
