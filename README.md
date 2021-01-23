@@ -9,6 +9,13 @@ Typer is a cli tool/game for testing your WPM, CPM and \*accuracy.
 ## Installing
 
 ```
+go get -u github.com/xslendix/typer/...
+typer
+```
+
+## Builing from source
+
+```
 cd go/src
 git clone --depth 1 https://github.com/xSlendiX/typer
 cd typer

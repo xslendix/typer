@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
+	//"io/ioutil"
 	"log"
 	"math/rand"
 	"os/user"
@@ -42,12 +42,17 @@ func main() {
 }
 
 func LoadText() {
-	content, err := ioutil.ReadFile(homeDir + "/.local/share/textdata")
+	// 	data, err := ioutil.ReadFile(homeDir + "/.local/share/textdata")
+	// 	if err != nil {
+	// 		fmt.Println(err)
+	// 	}
+
+	data, err := Asset("data/textdata")
 	if err != nil {
-		fmt.Println(err)
+		log.Fatal(err)
 	}
 
-	texts = strings.Split(string(content), "\n")
+	texts = strings.Split(string(data), "\n")
 
 }
 

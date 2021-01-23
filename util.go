@@ -136,7 +136,8 @@ func askChoice(prompt string, choices ...string) int {
 		}
 	}
 
-	fmt.Print(cursor.ClearEntireScreen())
+	fmt.Print(cursor.ClearEntireScreen(),
+		cursor.MoveUpperLeft(1))
 	return choice
 }
 
