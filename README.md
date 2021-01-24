@@ -2,6 +2,8 @@
 
 Typer is a cli tool/game for testing your WPM, CPM and \*accuracy.
 
+[![asciicast](https://asciinema.org/a/aw2whfEonVSOfQ3ga0msBX1Sz.svg)](https://asciinema.org/a/aw2whfEonVSOfQ3ga0msBX1Sz?t=5)
+
 ## Requirements
 
  - go
