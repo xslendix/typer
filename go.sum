@@ -2,5 +2,9 @@ github.com/ahmetalpbalkan/go-cursor v0.0.0-20131010032410-8136607ea412 h1:vOVO0y
 github.com/ahmetalpbalkan/go-cursor v0.0.0-20131010032410-8136607ea412/go.mod h1:AI9hp1tkp10pAlK5TCwL+7yWbRgtDm9jhToq6qij2xs=
 github.com/pkg/term v1.1.0 h1:xIAAdCMh3QIAy+5FrE8Ad8XoDhEU4ufwbaSozViP9kk=
 github.com/pkg/term v1.1.0/go.mod h1:E25nymQcrSllhX42Ok8MRm1+hyBdHY0dCeiKZ9jpNGw=
+github.com/wayneashleyberry/terminal-dimensions v1.0.0 h1:LawtS1nqKjAfqrmKOzkcrDLAjSzh38lEhC401JPjQVA=
+github.com/wayneashleyberry/terminal-dimensions v1.0.0/go.mod h1:PW2XrtV6KmKOPhuf7wbtcmw1/IFnC39mryRET2XbxeE=
+golang.org/x/sync v0.0.0-20201207232520-09787c993a3a h1:DcqTD9SDLc+1P/r1EmRBwnVsrOwW+kk2vWf9n+1sGhs=
+golang.org/x/sync v0.0.0-20201207232520-09787c993a3a/go.mod h1:RxMgew5VJxzue5/jJTE5uejpjVlOe/izrB70Jof72aM=
 golang.org/x/sys v0.0.0-20200909081042-eff7692f9009 h1:W0lCpv29Hv0UaM1LXb9QlBHLNP8UFfcKjblhVCWftOM=
 golang.org/x/sys v0.0.0-20200909081042-eff7692f9009/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=

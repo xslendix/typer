@@ -9,7 +9,6 @@ import (
 	"time"
 
 	cursor "github.com/ahmetalpbalkan/go-cursor"
-	terminal "github.com/wayneashleyberry/terminal-dimensions"
 )
 
 var texts []string
@@ -70,17 +69,15 @@ func startMenu() {
 			choice = askChoice("Multiplayer", "Join", "Host", "Back")
 			switch choice {
 			case 0:
-				connect("localhost", port_default)
-				break
-			case 1:
-				EnableKeyboard()
 				port, name, err := ConfigureMultiplayer()
 				if err != nil {
 					log.Fatal(err)
 				}
-				DisableKeyboard()
 
 				startServer(port, name)
+				connect(localhost, port)
+				break
+			case 1:
 				break
 			case 2:
 			default:
@@ -205,30 +202,27 @@ func CustomPrint(text, textWritten string) {
 	fmt.Print(cursor.ClearEntireScreen())
 	fmt.Print(cursor.MoveUpperLeft(1))
 
-	term_width, _ := terminal.Width()
-	textWr := wrap(text, int(term_width))
-
 	uncorrected = 0
 	for i, char := range textWritten {
 		if i < len(textWritten) {
 			if char == rune(text[i]) {
-				fmt.Print("\033[32m" + string(textWr[i]) + "\033[0m")
+				fmt.Print("\033[32m" + string(char) + "\033[0m")
 			} else {
 				uncorrected++
-				fmt.Print("\033[41m" + string(textWr[i]) + "\033[0m")
+				fmt.Print("\033[41m" + string(text[i]) + "\033[0m")
 			}
 		}
 	}
 
 	for i := len(textWritten); i < len(text); i++ {
 		if i == len(textWritten) {
-			if string(rune(text[i])) != " " || string(rune(text[i])) != "\n" {
-				fmt.Print("\033[45m" + string(rune(textWr[i])) + "\033[0m")
+			if string(rune(text[i])) != " " {
+				fmt.Print("\033[45m" + string(rune(text[i])) + "\033[0m")
 			} else {
 				fmt.Print("\033[45m█\033[0m")
 			}
 		} else {
-			fmt.Print(string(rune(textWr[i])))
+			fmt.Print(string(rune(text[i])))
 		}
 	}
 
