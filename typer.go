@@ -182,10 +182,15 @@ func startGame() {
 	fmt.Printf("\033[0mText (\033[94m%d\033[0m words) typed in \033[94m%s\033[0m.\n"+
 		"Your Gross WPM is \033[94m%d\033[0m, Net WPM is \033[94m%d\033[0m and your CPM is \033[94m%d\033[0m.\n"+
 		"You also typed with an accuracy of \033[94m%.2f%%\033[0m.\n"+
-		"Press any key to continue.\n",
+		"Press space to continue.\n",
 		wordLength, elapsed.String(), int(grosswpm), int(netwpm), cpm, acc)
 
-	GetChar()
+	for {
+		char, _, _ := GetChar()
+		if char == ' ' {
+			break
+		}
+	}
 
 	choice := askChoice("Do you wanna retry?", "Yes", "No")
 
